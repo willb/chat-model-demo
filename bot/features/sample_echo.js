@@ -3,6 +3,8 @@
  * Licensed under the MIT License.
  */
 
+var request = require('request');
+
 module.exports = function(controller) {
 
     controller.hears('sample','message', async(bot, message) => {
@@ -10,7 +12,8 @@ module.exports = function(controller) {
     });
 
     controller.on('message', async(bot, message) => {
-        await bot.reply(message, `Echo: ${ message.text }`);
+        
+        await bot.reply(message, 'endpoint is ' + process.env.ENDPOINT + '; message was: ' + message.text);
     });
 
 }
