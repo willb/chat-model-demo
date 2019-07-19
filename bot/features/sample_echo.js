@@ -12,8 +12,19 @@ module.exports = function(controller) {
     });
 
     controller.on('message', async(bot, message) => {
-        
-        await bot.reply(message, 'endpoint is ' + process.env.ENDPOINT + '; message was: ' + message.text);
+        var endpoint = process.env.ENDPOINT;
+        if(endpoint) {
+            request('http://' + endpoint, async(err, response, body) => {
+                if(err) {
+                    console.log('error: ', err);
+                    await bot.reply(message, 'message was: ' + message.text);
+                } else {
+                    await bot.reply(message, 'endpoint is ' + process.env.ENDPOINT + '; message was: ' + message.text);            
+                }
+            });
+        } else {
+            await bot.reply(message, 'message was: ' + message.text);
+        }
     });
 
 }
